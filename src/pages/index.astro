@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../data/site';
+const articles = (await getCollection('blog', ({data}) => !data.draft)).sort((a,b)=>b.data.publishedAt.valueOf()-a.data.publishedAt.valueOf());
+const featured = articles.slice(0,3);
+const topicNotes = ['拓扑 / 原理 / 变换器','MOSFET / SiC / 磁性器件','采样 / 驱动 / 信号链','布局布线 / EMI / 测试','调试 / 热设计 / 可靠性','工具 / 方法 / 新实践'];
+---
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">POWER ELECTRONICS · ENGINEERING NOTES</div>
+        <h1>把复杂的电源设计，<br /><span>讲清楚，也做扎实。</span></h1>
+        <div class="hero-rule"><i></i><small>卷一 · 工程笔记</small></div>
+        <p>专注电源电子技术的学习、实践与分享，从原理到工程，从芯片到系统，构建可落地的知识体系。</p>
+        <div class="hero-values" aria-label="内容特色">
+          <div><b>01</b><span><strong>深入的技术文章</strong>从原理走到实践</span></div>
+          <div><b>02</b><span><strong>工程化经验总结</strong>少走弯路</span></div>
+          <div><b>03</b><span><strong>开放的交流成长</strong>与同行一起进步</span></div>
+        </div>
+      </div>
+      <div class="blueprint" aria-label="开关电源工作链路示意图">
+        <div class="blueprint-head"><span>电源变换系统 · 原理图版</span><small>图 01 / 修订 A</small></div>
+        <svg viewBox="0 0 680 400" role="img" aria-labelledby="diagram-title diagram-desc">
+          <title id="diagram-title">开关电源工作链路</title>
+          <desc id="diagram-desc">从交流输入，经过整流、功率变换、隔离和滤波后得到直流输出，同时由控制环路反馈调节。</desc>
+          <defs><pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M 28 0 L 0 0 0 28" fill="none" stroke="currentColor" stroke-opacity=".10" stroke-width="1"/></pattern></defs>
+          <rect width="680" height="400" fill="url(#grid)"/>
+          <g class="diagram-line" fill="none" stroke="currentColor" stroke-width="2"><path d="M42 178H92M188 178h54M338 178h54M488 178h62"/><path d="M596 218v74H290v-54" stroke-dasharray="6 6"/><path d="M272 315c18-48 35 48 53 0s35 48 53 0 35 48 53 0"/></g>
+          <g class="diagram-block" fill="none" stroke="currentColor" stroke-width="2"><rect x="92" y="138" width="96" height="80"/><rect x="242" y="138" width="96" height="80"/><rect x="392" y="138" width="96" height="80"/><rect x="550" y="138" width="88" height="80"/></g>
+          <g class="diagram-label" text-anchor="middle"><text x="140" y="173">RECTIFIER</text><text x="140" y="193">整流</text><text x="290" y="173">SWITCHING</text><text x="290" y="193">功率变换</text><text x="440" y="173">ISOLATION</text><text x="440" y="193">隔离</text><text x="594" y="173">FILTER</text><text x="594" y="193">滤波</text><text x="69" y="160">AC</text><text x="655" y="160">DC</text><text x="445" y="286">FEEDBACK / CONTROL LOOP</text></g>
+          <g class="diagram-note"><text x="42" y="68">TOPOLOGY</text><text x="42" y="88">CONTROL</text><text x="42" y="108">THERMAL · RELIABILITY</text><text x="510" y="62">FROM CIRCUIT</text><text x="510" y="83">TO A BRIGHTER TOMORROW</text></g>
+          <circle cx="42" cy="178" r="5"/><circle cx="638" cy="178" r="5"/>
+        </svg>
+        <div class="blueprint-caption"><span>从电路原理到工程实现</span><i></i><small>稳定 · 高效 · 可靠</small></div>
+      </div>
+    </div>
+  </section>
+  <section class="section home-content">
+    <div class="container home-columns">
+      <div class="recent-column">
+        <div class="section-head ruled"><div class="section-number">01</div><h2>最近更新</h2><span class="rule"></span><a class="section-link" href="/articles/">查看全部 →</a></div>
+        {featured.length ? <div class="article-list">{featured.map((entry)=><a class="article-row" href={`/articles/${entry.data.slug}/`}><div class="article-category">{categories[entry.data.category]}</div><div class="article-summary"><h3>{entry.data.title}</h3><p>{entry.data.description}</p></div><time>{entry.data.publishedAt.toISOString().slice(0,10)}</time></a>)}</div> : <a class="article-row empty-row" href="/about/"><div class="article-category">编者说明</div><div class="article-summary"><h3>首批技术文章正在整理</h3><p>完成资料核对和技术审核后，文章会在这里发布。</p></div><span class="row-mark">待刊</span></a>}
+      </div>
+      <aside class="topics-column">
+        <div class="section-head ruled"><div class="section-number">02</div><h2>从专题进入</h2><span class="rule"></span></div>
+        <div class="topic-cards">{Object.entries(categories).map(([slug,name], index)=><a href={`/categories/${slug}/`}><span class="topic-icon">{String(index + 1).padStart(2,'0')}</span><strong>{name}</strong><small>{topicNotes[index]}</small></a>)}</div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

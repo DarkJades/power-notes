@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const entries=await getCollection('blog',({data})=>!data.draft);
+const tags=[...new Set(entries.flatMap(e=>e.data.tags))].sort((a,b)=>a.localeCompare(b,'zh-CN'));
+---
+<BaseLayout title="文章标签"><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">TAGS</div><h1>文章标签</h1><p>按器件、拓扑和工程主题交叉查找文章。</p></header>{tags.length?<div>{tags.map(tag=><a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}</div>:<div class="empty">暂无已发布文章标签。</div>}</div></div></BaseLayout>

@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../../data/site';
+const entries=await getCollection('blog',({data})=>!data.draft);
+---
+<BaseLayout title="文章分类"><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">CATEGORIES</div><h1>文章分类</h1><p>从一个技术方向出发，连续阅读相关内容。</p></header><div class="category-grid">{Object.entries(categories).map(([slug,name])=><a class="category-item" href={`/categories/${slug}/`}><span>{entries.filter(e=>e.data.category===slug).length} 篇文章</span><strong>{name}</strong></a>)}</div></div></div></BaseLayout>
