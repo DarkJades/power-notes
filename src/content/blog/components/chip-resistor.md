@@ -23,17 +23,20 @@ $$R=\rho\frac{L}{S}$$
 
 相较于传统的直插（插件）电阻，贴片电阻无需在 PCB 上打孔，具有体积小、重量轻、寄生参数（电感、电容）低、高频特性好、适合自动化生产等显著优点，已成为现代电子产品的绝对主流。
 
-![常见贴片电阻实物与封装标识](/power-notes/images/chip-resistor/smd-resistors.jpg)
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/smd-resistors.jpg" alt="常见贴片电阻实物与封装标识" loading="lazy" />
+  <figcaption>图 1：常见贴片电阻实物与封装标识</figcaption>
+</figure>
 
-*图 1：常见贴片电阻实物与封装标识*
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/resistor-symbol.jpg" alt="电阻电路符号" loading="lazy" />
+  <figcaption>图 2：电阻电路符号</figcaption>
+</figure>
 
-![电阻电路符号](/power-notes/images/chip-resistor/resistor-symbol.jpg)
-
-*图 2：电阻电路符号*
-
-![薄膜电阻结构示意](/power-notes/images/chip-resistor/thin-film-structure.jpg)
-
-*图 3：薄膜电阻结构示意（保护膜、氧化铝基板、内部电极、金属覆膜等）*
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/thin-film-structure.jpg" alt="薄膜电阻结构示意" loading="lazy" />
+  <figcaption>图 3：薄膜电阻结构示意（保护膜、氧化铝基板、内部电极、金属覆膜等）</figcaption>
+</figure>
 
 ## 二、关键特性与参数
 
@@ -43,9 +46,10 @@ $$R=\rho\frac{L}{S}$$
 
 常见封装与功率关系（@70 °C）：
 
-![厚膜电阻结构示意](/power-notes/images/chip-resistor/thick-film-structure.jpg)
-
-*图 4：厚膜电阻结构示意（顶部电极、边缘电极、电阻层、陶瓷基底、底部电极等）*
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/thick-film-structure.jpg" alt="厚膜电阻结构示意" loading="lazy" />
+  <figcaption>图 4：厚膜电阻结构示意（顶部电极、边缘电极、电阻层、陶瓷基底、底部电极等）</figcaption>
+</figure>
 
 | 英制 (mil) | 公制 (mm) | 常规功率系列 | 提升功率系列 | 最大工作电压 (V) |
 | --- | --- | --- | --- | --- |
@@ -63,9 +67,10 @@ $$R=\rho\frac{L}{S}$$
 
 在最高环境温度（通常为 **70 °C**）下，电阻表面温升达到极限值时所能承受的最大功耗。**超过 70 °C 时必须降额使用。**
 
-![电阻随温度降额曲线](/power-notes/images/chip-resistor/power-derating-curve.jpg)
-
-*图 5：贴片电阻典型功率降额曲线（示例：MRA632 系列）*
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/power-derating-curve.jpg" alt="电阻随温度降额曲线" loading="lazy" />
+  <figcaption>图 5：贴片电阻典型功率降额曲线（示例：MRA632 系列）</figcaption>
+</figure>
 
 ### 3. 额定电压与最大工作电压
 
@@ -94,17 +99,19 @@ $$TCR = \frac{R_2-R_1}{R_1 \times (t_2-t_1)} \times 10^6$$
 
 实际电阻并非理想元件，其等效电路包含寄生电感 $L_p$ 和寄生电容 $C_p$。
 
-![电阻的高频等效电路](/power-notes/images/chip-resistor/high-frequency-equivalent-circuit.jpg)
-
-*图 6：电阻的高频等效电路（$R$、$L_p$、$C_p$）*
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/high-frequency-equivalent-circuit.jpg" alt="电阻的高频等效电路" loading="lazy" />
+  <figcaption>图 6：电阻的高频等效电路（$R$、$L_p$、$C_p$）</figcaption>
+</figure>
 
 阻抗公式：
 
 $$Z=\frac{1}{j\omega C_p+1/(j\omega L_p+R)}$$
 
-![电阻阻抗绝对值与频率的关系](/power-notes/images/chip-resistor/impedance-vs-frequency.jpg)
-
-*图 7：电阻阻抗绝对值随频率变化的典型曲线*
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/impedance-vs-frequency.jpg" alt="电阻阻抗绝对值与频率的关系" loading="lazy" />
+  <figcaption>图 7：电阻阻抗绝对值随频率变化的典型曲线</figcaption>
+</figure>
 
 **影响**：低频时阻抗为 $R$；频率升高，寄生电容主导，阻抗下降；频率继续升高，寄生电感主导，阻抗上升。贴片电阻因引脚短，寄生电感远小于直插电阻，高频特性更优。
 
@@ -145,13 +152,15 @@ $$P \le \left[0.6 - \frac{T - T_s}{T_{max} - T_s}\right] \times P_r$$
 
 - **瞬态（脉冲）功率**：脉冲功率需低于规格书规定的最大值，且平均功率仍需满足稳态降额要求。
 
-![单脉冲最大瞬态电压曲线](/power-notes/images/chip-resistor/single-pulse-voltage.jpg)
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/single-pulse-voltage.jpg" alt="单脉冲最大瞬态电压曲线" loading="lazy" />
+  <figcaption>图 8：单脉冲情况下最大允许峰值脉冲电压与脉宽的关系（示例）</figcaption>
+</figure>
 
-*图 8：单脉冲情况下最大允许峰值脉冲电压与脉宽的关系（示例）*
-
-![连续脉冲最大瞬态功率曲线](/power-notes/images/chip-resistor/continuous-pulse-power.jpg)
-
-*图 9：连续脉冲情况下最大允许峰值连续脉冲功率与脉宽的关系（示例）*
+<figure class="figure">
+  <img src="/power-notes/images/chip-resistor/continuous-pulse-power.jpg" alt="连续脉冲最大瞬态功率曲线" loading="lazy" />
+  <figcaption>图 9：连续脉冲情况下最大允许峰值连续脉冲功率与脉宽的关系（示例）</figcaption>
+</figure>
 
 ### 2. 电压降额
 

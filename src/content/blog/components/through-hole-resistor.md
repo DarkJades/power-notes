@@ -15,13 +15,15 @@ draft: false
 
 直插电阻（Through-Hole Resistor，简称「插件电阻」）是一种具有两根金属引线、用于穿过印刷电路板（PCB）上钻孔并进行焊接的电子元件。其核心物理功能是基于欧姆定律 $U=IR$，对流过自身的电流产生阻碍作用，从而在电路中实现分压、限流、偏置等功能。
 
-![直插电阻实物](/power-notes/images/through-hole-resistor/through-hole-resistors.jpg)
+<figure class="figure">
+  <img src="/power-notes/images/through-hole-resistor/through-hole-resistors.jpg" alt="直插电阻实物" loading="lazy" />
+  <figcaption>图 1：常见直插电阻实物（带色环标识）</figcaption>
+</figure>
 
-*图 1：常见直插电阻实物（带色环标识）*
-
-![电阻电路符号](/power-notes/images/through-hole-resistor/resistor-symbol.jpg)
-
-*图 2：电阻电路符号*
+<figure class="figure">
+  <img src="/power-notes/images/through-hole-resistor/resistor-symbol.jpg" alt="电阻电路符号" loading="lazy" />
+  <figcaption>图 2：电阻电路符号</figcaption>
+</figure>
 
 直插电阻的物理基础是导体的电阻公式：
 
@@ -45,13 +47,15 @@ $$R = \rho \frac{L}{S}$$
 
 直插电阻常用色环表示阻值与精度。四色环与五色环的对照方法如下：
 
-![四色环直插电阻色环对照表](/power-notes/images/through-hole-resistor/4-band-color-code.jpg)
+<figure class="figure">
+  <img src="/power-notes/images/through-hole-resistor/4-band-color-code.jpg" alt="四色环直插电阻色环对照表" loading="lazy" />
+  <figcaption>图 3：四色环直插电阻色环对照表</figcaption>
+</figure>
 
-*图 3：四色环直插电阻色环对照表*
-
-![五色环直插电阻色环对照表](/power-notes/images/through-hole-resistor/5-band-color-code.jpg)
-
-*图 4：五色环直插电阻色环对照表*
+<figure class="figure">
+  <img src="/power-notes/images/through-hole-resistor/5-band-color-code.jpg" alt="五色环直插电阻色环对照表" loading="lazy" />
+  <figcaption>图 4：五色环直插电阻色环对照表</figcaption>
+</figure>
 
 ### 2. 额定功率
 
@@ -78,9 +82,10 @@ $$R = \rho \frac{L}{S}$$
 
 实际直插电阻并非理想元件，其等效电路包含电阻 $R$、串联寄生电感 $L_p$ 和并联寄生电容 $C_p$。
 
-![电阻的高频等效电路](/power-notes/images/through-hole-resistor/high-frequency-equivalent-circuit.png)
-
-*图 5：电阻的高频等效电路（$R$、$L_p$、$C_p$）*
+<figure class="figure">
+  <img src="/power-notes/images/through-hole-resistor/high-frequency-equivalent-circuit.png" alt="电阻的高频等效电路" loading="lazy" />
+  <figcaption>图 5：电阻的高频等效电路（$R$、$L_p$、$C_p$）</figcaption>
+</figure>
 
 **影响因素**：
 - **寄生电感**：主要来自于电阻的引线和内部结构（如线绕电阻的线圈结构、金属膜电阻的刻槽螺旋结构）。根据《电磁兼容原理及应用》，对于有引脚的电阻，从寄生电感角度考虑，应首选碳膜电阻，其次是金属膜电阻，最后是线绕电阻。
@@ -119,9 +124,10 @@ $$R = \rho \frac{L}{S}$$
 
 - **稳态降额**：当环境温度低于额定温度（通常 70 °C）时，建议将实际功率降额至额定功率的 60%~70%。当环境温度高于额定温度时，需根据功率降额曲线进一步降额。
 
-![电阻功率降额曲线](/power-notes/images/through-hole-resistor/power-derating-curve.jpg)
-
-*图 6：直插电阻典型功率降额曲线（示例）*
+<figure class="figure">
+  <img src="/power-notes/images/through-hole-resistor/power-derating-curve.jpg" alt="电阻功率降额曲线" loading="lazy" />
+  <figcaption>图 6：直插电阻典型功率降额曲线（示例）</figcaption>
+</figure>
 
 - **瞬态（脉冲）降额**：电阻可承受远大于额定功率的短时脉冲。但需参考厂家提供的脉冲功率曲线，且平均功率仍需满足稳态降额要求。根据《GJBZ 35-1993》，对于脉冲负载（5 s 内），电阻可承受的脉冲功率为平均功率的 2~5 倍（具体以规格书为准）。
 - **特殊应用**：在软启动和吸收应用中，单次脉冲或平均功率都应满足降额要求，推荐使用线绕或金属氧化膜电阻（《器件应用 CHECKLIST 总表》）。

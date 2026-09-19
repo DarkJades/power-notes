@@ -17,4 +17,23 @@ const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long
       <div class="prose"><slot /></div>
     </div>
   </article>
+  <div class="lightbox" id="figure-lightbox" role="dialog" aria-label="图片放大查看">
+    <img alt="" />
+  </div>
+  <script>
+    const box = document.getElementById('figure-lightbox');
+    if (box) {
+      const img = box.querySelector('img');
+      document.querySelectorAll('.prose .figure img').forEach((el) => {
+        el.addEventListener('click', () => {
+          img.src = el.getAttribute('src') || '';
+          img.alt = el.getAttribute('alt') || '';
+          box.classList.add('is-open');
+        });
+      });
+      const close = () => box.classList.remove('is-open');
+      box.addEventListener('click', close);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    }
+  </script>
 </BaseLayout>

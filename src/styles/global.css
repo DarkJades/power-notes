@@ -213,6 +213,105 @@ img { max-width: 100%; height: auto; }
   .hero h1 { font-size:4rem; }
 }
 
+/* ==========================================================================
+   文章排版令牌（技术文档）
+   —— 下面这一整块的值可以由「排版调整台」可视化调整，改完替换即可。
+   —— 数值单位：rem / em / px / % ；颜色用十六进制或 var()。
+   ========================================================================== */
+:root {
+  /* 正文 */
+  --doc-size: 1.08rem;        /* 正文字号 */
+  --doc-leading: 2;           /* 正文行高（倍数） */
+  --doc-para-gap: 1.15em;     /* 段落间距 */
+  --doc-measure: 760px;       /* 正文栏宽 */
+  --doc-font: "Songti SC", STSong, SimSun, serif;  /* 正文字体 */
+
+  /* 标题 */
+  --doc-h2-size: 1.72rem;
+  --doc-h3-size: 1.28rem;
+  --doc-h2-space: 2.4em;      /* h2 上方留白 */
+
+  /* 插图 */
+  --fig-width: 118%;          /* 图片宽度（相对正文栏宽，>100% 会向两侧溢出） */
+  --fig-gap: 2.2em;           /* 图上下间距 */
+  --fig-pad: 10px;            /* 图边框内衬 */
+  --fig-border: 1px solid var(--line);
+  --fig-bg: #fffefa;          /* 图底色 */
+
+  /* 图注 */
+  --cap-size: .86rem;
+  --cap-color: #706d68;
+  --cap-align: center;
+
+  /* 表格 */
+  --tbl-size: .92rem;
+  --tbl-pad-y: 11px;
+  --tbl-pad-x: 13px;
+  --tbl-head-bg: #f0ede7;
+
+  /* 公式 */
+  --math-scale: 1;
+}
+
+.prose { max-width: var(--doc-measure); font-family: var(--doc-font); font-size: var(--doc-size); line-height: var(--doc-leading); }
+.prose > p { margin-block: var(--doc-para-gap); }
+.prose h2 { margin-top: var(--doc-h2-space); font-size: var(--doc-h2-size); }
+.prose h3 { font-size: var(--doc-h3-size); }
+
+/* 插图 */
+.prose .figure {
+  width: var(--fig-width);
+  margin: var(--fig-gap) calc((100% - var(--fig-width)) / 2);
+}
+.prose .figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: var(--fig-pad);
+  border: var(--fig-border);
+  background: var(--fig-bg);
+  cursor: zoom-in;
+}
+.prose .figure figcaption {
+  margin-top: .75em;
+  color: var(--cap-color);
+  font-size: var(--cap-size);
+  line-height: 1.65;
+  text-align: var(--cap-align);
+}
+
+/* 表格：外层滚动容器，避免宽表溢出 */
+.prose .table-wrap { margin: 1.8em 0; overflow-x: auto; }
+.prose table { width: 100%; font-size: var(--tbl-size); }
+.prose th, .prose td { padding: var(--tbl-pad-y) var(--tbl-pad-x); }
+.prose th { background: var(--tbl-head-bg); }
+.prose .katex { font-size: calc(1em * var(--math-scale)); }
+
+/* 图片放大查看 */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 3vw;
+  background: rgba(27,26,24,.92);
+  cursor: zoom-out;
+}
+.lightbox.is-open { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 94vh;
+  padding: 12px;
+  background: #fffefa;
+}
+
+@media (max-width: 760px) {
+  .prose .figure { width: 100%; margin-inline: 0; }
+  :root { --doc-measure: 100%; }
+}
+
 /* Unified technical-book visual language */
 :root { --book-ink:#1b1a18; --book-red:#985744; --book-paper:#fbfaf6; --book-line:#d8d4cd; }
 .site-header { background:var(--book-paper); }

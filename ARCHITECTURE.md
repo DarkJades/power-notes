@@ -48,7 +48,7 @@
 | `/robots.txt`        | `src/pages/robots.txt.ts`               | —             | 搜索引擎爬虫规则         |
 | `/sitemap-index.xml` | 由 `@astrojs/sitemap` 生成                 | —             | 站点地图             |
 
-**构建产物**：17 个页面（1 首页 + 1 文章 + 6 分类 + 3 标签 + 6 静态/动态）
+**构建产物**：24 个页面（1 首页 + 3 文章 + 6 分类 + 8 标签 + 6 静态/动态）
 
 ### 想新增页面？
 
@@ -255,6 +255,72 @@
 | `.prose`                                  | 文章正文排版（含表格、代码块、引用） |
 | `.section-head` `.section-number` `.rule` | 章节标题栏              |
 | `.site-footer` `.footer-grid`             | 页脚                 |
+
+### 文章排版令牌（可可视化调整）
+
+文章正文的所有排版数值都集中在 `src/styles/global.css` 末尾的「文章排版令牌」块里，以 CSS 变量形式定义。**改这 21 个变量即可调整全文排版，不需要动任何模板或组件。**
+
+<!-- 修改示例：把 --doc-size 改成 1.12rem，正文就整体变大 -->
+
+| 变量                | 作用           | 当前值                          |
+| ----------------- | ------------ | ---------------------------- |
+| `--doc-size`      | 正文字号         | `1.08rem`                    |
+| `--doc-leading`   | 正文行高         | `2`                          |
+| `--doc-para-gap`  | 段落间距         | `1.15em`                     |
+| `--doc-measure`   | 正文栏宽         | `760px`                      |
+| `--doc-font`      | 正文字体         | `"Songti SC", STSong, SimSun, serif` |
+| `--doc-h2-size`   | 二级标题字号       | `1.72rem`                    |
+| `--doc-h3-size`   | 三级标题字号       | `1.28rem`                    |
+| `--doc-h2-space`  | 二级标题上留白      | `2.4em`                      |
+| `--fig-width`     | 插图宽度（占栏宽比例）  | `118%`                       |
+| `--fig-gap`       | 插图上下间距       | `2.2em`                      |
+| `--fig-pad`       | 插图边框内衬       | `10px`                       |
+| `--fig-bg`        | 插图底色         | `#fffefa`                    |
+| `--cap-size`      | 图注字号         | `0.86rem`                    |
+| `--cap-color`     | 图注颜色         | `#706d68`                    |
+| `--cap-align`     | 图注对齐         | `center`                     |
+| `--tbl-size`      | 表格字号         | `0.92rem`                    |
+| `--tbl-pad-y`     | 单元格纵向内衬      | `11px`                       |
+| `--tbl-pad-x`     | 单元格横向内衬      | `13px`                       |
+| `--tbl-head-bg`   | 表头底色         | `#f0ede7`                    |
+| `--math-scale`    | 公式缩放         | `1`                          |
+
+**插图的写法**：文章里的插图用 HTML `<figure>` 结构，图注写在 `<figcaption>` 里。
+
+```html
+<figure class="figure">
+  <img src="/power-notes/images/<分类>/<文件名>.jpg" alt="替代文字" loading="lazy" />
+  <figcaption>图 1：图注文字</figcaption>
+</figure>
+```
+
+插图统一放在 `public/images/<文章 slug>/` 下。点图可全屏放大（`ArticleLayout.astro` 里的 lightbox）。
+
+### 图形化调整台（推荐）
+
+改排版数值不必手改 CSS。站点同级的 `power-notes-tools/` 目录下有一个本地调整台：
+
+```bash
+cd power-notes-tools
+node tuning-server.mjs 8788
+# 浏览器打开 http://127.0.0.1:8788/tuning.html
+```
+
+它左侧是滑块/取色器，右侧是**真实文章页**（不是模拟稿），所有调整实时生效。支持：
+
+- 分五组调整：正文 / 标题 / 插图 / 表格 / 公式
+- 4 套预设：默认、紧凑、宽松、图表优先
+- 桌面 / 手机两种预览宽度
+- 在两篇文章之间切换对比
+
+调完后：
+
+1. 点 **保存配置** → 写入 `power-notes-tools/tuning-values.json`
+2. 告诉 WorkBuddy「排版调好了」，它会读取该文件并更新 `global.css`，然后重新构建发布
+
+也可以点 **复制 CSS** 直接拿到变量块，手动替换到 `global.css`。
+
+<!-- 修改示例：把这个目录加入 .gitignore，或整个删除，都不影响站点运行 -->
 
 ---
 
