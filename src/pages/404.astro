@@ -1,4 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { resolveUrl } from '../data/site';
 ---
-<BaseLayout title="页面未找到"><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">ERROR 404</div><h1>没有找到这个页面</h1><p>链接可能已经变化，或者地址输入有误。</p><a class="button primary" href="/">返回首页</a></header></div></div></BaseLayout>
+<BaseLayout title="页面未找到"><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">ERROR 404</div><h1>没有找到这个页面</h1><p>链接可能已经变化，或者地址输入有误。</p><a class="button primary" href={resolveUrl('')}>返回首页</a></header></div></div></BaseLayout>

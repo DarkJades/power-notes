@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { categories } from '../data/site';
+import { categories, resolveUrl } from '../data/site';
 const articles = (await getCollection('blog', ({data}) => !data.draft)).sort((a,b)=>b.data.publishedAt.valueOf()-a.data.publishedAt.valueOf());
 const featured = articles.slice(0,3);
 const topicNotes = ['拓扑 / 原理 / 变换器','MOSFET / SiC / 磁性器件','采样 / 驱动 / 信号链','布局布线 / EMI / 测试','调试 / 热设计 / 可靠性','工具 / 方法 / 新实践'];
@@ -40,12 +40,12 @@ const topicNotes = ['拓扑 / 原理 / 变换器','MOSFET / SiC / 磁性器件',
   <section class="section home-content">
     <div class="container home-columns">
       <div class="recent-column">
-        <div class="section-head ruled"><div class="section-number">01</div><h2>最近更新</h2><span class="rule"></span><a class="section-link" href="/articles/">查看全部 →</a></div>
-        {featured.length ? <div class="article-list">{featured.map((entry)=><a class="article-row" href={`/articles/${entry.data.slug}/`}><div class="article-category">{categories[entry.data.category]}</div><div class="article-summary"><h3>{entry.data.title}</h3><p>{entry.data.description}</p></div><time>{entry.data.publishedAt.toISOString().slice(0,10)}</time></a>)}</div> : <a class="article-row empty-row" href="/about/"><div class="article-category">编者说明</div><div class="article-summary"><h3>首批技术文章正在整理</h3><p>完成资料核对和技术审核后，文章会在这里发布。</p></div><span class="row-mark">待刊</span></a>}
+        <div class="section-head ruled"><div class="section-number">01</div><h2>最近更新</h2><span class="rule"></span><a class="section-link" href={resolveUrl('articles/')}>查看全部 →</a></div>
+        {featured.length ? <div class="article-list">{featured.map((entry)=><a class="article-row" href={resolveUrl(`articles/${entry.data.slug}/`)}><div class="article-category">{categories[entry.data.category]}</div><div class="article-summary"><h3>{entry.data.title}</h3><p>{entry.data.description}</p></div><time>{entry.data.publishedAt.toISOString().slice(0,10)}</time></a>)}</div> : <a class="article-row empty-row" href={resolveUrl('about/')}><div class="article-category">编者说明</div><div class="article-summary"><h3>首批技术文章正在整理</h3><p>完成资料核对和技术审核后，文章会在这里发布。</p></div><span class="row-mark">待刊</span></a>}
       </div>
       <aside class="topics-column">
         <div class="section-head ruled"><div class="section-number">02</div><h2>从专题进入</h2><span class="rule"></span></div>
-        <div class="topic-cards">{Object.entries(categories).map(([slug,name], index)=><a href={`/categories/${slug}/`}><span class="topic-icon">{String(index + 1).padStart(2,'0')}</span><strong>{name}</strong><small>{topicNotes[index]}</small></a>)}</div>
+        <div class="topic-cards">{Object.entries(categories).map(([slug,name], index)=><a href={resolveUrl(`categories/${slug}/`)}><span class="topic-icon">{String(index + 1).padStart(2,'0')}</span><strong>{name}</strong><small>{topicNotes[index]}</small></a>)}</div>
       </aside>
     </div>
   </section>

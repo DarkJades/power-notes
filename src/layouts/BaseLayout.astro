@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { site } from '../data/site';
+import { site, resolveUrl } from '../data/site';
 interface Props { title?: string; description?: string; }
 const { title, description = site.description } = Astro.props;
 const pageTitle = title ? `${title}｜${site.name}` : `${site.name}｜电力电子技术笔记`;
@@ -11,19 +11,19 @@ const pageTitle = title ? `${title}｜${site.name}` : `${site.name}｜电力电�
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={resolveUrl('favicon.svg')} />
     <title>{pageTitle}</title>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
     <header class="site-header">
       <div class="container nav">
-        <a class="brand-lockup" href="/" aria-label={`${site.name}首页`}>
+        <a class="brand-lockup" href={resolveUrl('')} aria-label={`${site.name}首页`}>
           <strong>{site.name}</strong>
           <span>记录 · 思考 · 分享<br />让电源技术走得更远</span>
         </a>
         <nav class="nav-links" aria-label="主导航">
-          <a href="/articles/">文章</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/about/">关于</a>
+          <a href={resolveUrl('articles/')}>文章</a><a href={resolveUrl('categories/')}>分类</a><a href={resolveUrl('tags/')}>标签</a><a href={resolveUrl('about/')}>关于</a>
         </nav>
       </div>
     </header>
@@ -31,7 +31,7 @@ const pageTitle = title ? `${title}｜${site.name}` : `${site.name}｜电力电�
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>{site.name} · {new Date().getFullYear()}</div>
-        <div class="footer-links"><a href={`mailto:${site.email}`}>{site.email}</a><a href="/copyright/">版权与转载</a><a href="/rss.xml">RSS</a></div>
+        <div class="footer-links"><a href={`mailto:${site.email}`}>{site.email}</a><a href={resolveUrl('copyright/')}>版权与转载</a><a href={resolveUrl('rss.xml')}>RSS</a></div>
       </div>
     </footer>
   </body>

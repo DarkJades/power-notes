@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { categories } from '../../data/site';
+import { categories, resolveUrl } from '../../data/site';
 export function getStaticPaths(){return Object.entries(categories).map(([slug,name])=>({params:{category:slug},props:{slug,name}}));}
 const {slug,name}=Astro.props;
 const entries=(await getCollection('blog',({data})=>!data.draft&&data.category===slug)).sort((a,b)=>b.data.publishedAt.valueOf()-a.data.publishedAt.valueOf());
 ---
-<BaseLayout title={name}><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">CATEGORY</div><h1>{name}</h1><p>本分类共 {entries.length} 篇已发布文章。</p></header>{entries.length?<div class="list-stack">{entries.map(e=><a class="list-row" href={`/articles/${e.data.slug}/`}><h2>{e.data.title}</h2><p>{e.data.description}</p></a>)}</div>:<div class="empty">这个分类的文章正在整理，完成审核后会在这里出现。</div>}</div></div></BaseLayout>
+<BaseLayout title={name}><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">CATEGORY</div><h1>{name}</h1><p>本分类共 {entries.length} 篇已发布文章。</p></header>{entries.length?<div class="list-stack">{entries.map(e=><a class="list-row" href={resolveUrl(`articles/${e.data.slug}/`)}><h2>{e.data.title}</h2><p>{e.data.description}</p></a>)}</div>:<div class="empty">这个分类的文章正在整理，完成审核后会在这里出现。</div>}</div></div></BaseLayout>

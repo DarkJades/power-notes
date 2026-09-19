@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { resolveUrl } from '../../data/site';
 export async function getStaticPaths(){const e=await getCollection('blog',({data})=>!data.draft);const tags=[...new Set(e.flatMap(x=>x.data.tags))];return tags.map(tag=>({params:{tag},props:{tag}}));}
 const {tag}=Astro.props;const entries=await getCollection('blog',({data})=>!data.draft&&data.tags.includes(tag));
 ---
-<BaseLayout title={`标签 ${tag}`}><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">TAG</div><h1>{tag}</h1><p>与该标签相关的已发布文章。</p></header><div class="list-stack">{entries.map(e=><a class="list-row" href={`/articles/${e.data.slug}/`}><h2>{e.data.title}</h2><p>{e.data.description}</p></a>)}</div></div></div></BaseLayout>
+<BaseLayout title={`标签 ${tag}`}><div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">TAG</div><h1>{tag}</h1><p>与该标签相关的已发布文章。</p></header><div class="list-stack">{entries.map(e=><a class="list-row" href={resolveUrl(`articles/${e.data.slug}/`)}><h2>{e.data.title}</h2><p>{e.data.description}</p></a>)}</div></div></div></BaseLayout>

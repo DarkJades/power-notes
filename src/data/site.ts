@@ -5,6 +5,13 @@ export const site = {
   url: 'https://www.powershiguang.com',
 };
 
+export const baseUrl = import.meta.env.BASE_URL;
+export const resolveUrl = (path: string) => {
+  const base = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  const cleanPath = path.replace(/^\/+/, '');
+  return `${base}${cleanPath}`;
+};
+
 export const categories = {
   'power-electronics': '电力电子',
   components: '元器件',

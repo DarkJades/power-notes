@@ -4,7 +4,8 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
-  site: 'https://www.powershiguang.com',
+  site: 'https://darkjades.github.io',
+  base: '/power-notes',
   output: 'static',
   integrations: [sitemap()],
   markdown: { remarkPlugins: [remarkMath], rehypePlugins: [rehypeKatex] },

@@ -1,1 +1,1 @@
-export function GET({site}){const origin=site?.origin??'https://example.com';return new Response(`User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap-index.xml\n`,{headers:{'Content-Type':'text/plain; charset=utf-8'}});}
+export function GET({site}){const origin=site?.origin??'https://example.com';const base=import.meta.env.BASE_URL.endsWith('/')?import.meta.env.BASE_URL:`${import.meta.env.BASE_URL}/`;const sitemap=`${origin}${base}sitemap-index.xml`;return new Response(`User-agent: *\nAllow: /\nSitemap: ${sitemap}\n`,{headers:{'Content-Type':'text/plain; charset=utf-8'}});}

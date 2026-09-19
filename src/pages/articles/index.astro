@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { categories } from '../../data/site';
+import { categories, resolveUrl } from '../../data/site';
 const articles=(await getCollection('blog',({data})=>!data.draft)).sort((a,b)=>b.data.publishedAt.valueOf()-a.data.publishedAt.valueOf());
 ---
 <BaseLayout title="技术文章">
   <div class="page-main"><div class="container"><header class="page-title"><div class="eyebrow">ARTICLES</div><h1>技术文章</h1><p>围绕原理、设计、验证和问题复盘整理的公开笔记。</p></header>
-  {articles.length ? <div class="list-stack">{articles.map((entry)=><a class="list-row" href={`/articles/${entry.data.slug}/`}><div class="article-meta"><span>{categories[entry.data.category]}</span><span>{entry.data.publishedAt.toISOString().slice(0,10)}</span></div><h2>{entry.data.title}</h2><p>{entry.data.description}</p></a>)}</div> : <div class="empty">暂无已发布文章。示例文章目前保持草稿状态，不会出现在公开列表中。</div>}
+  {articles.length ? <div class="list-stack">{articles.map((entry)=><a class="list-row" href={resolveUrl(`articles/${entry.data.slug}/`)}><div class="article-meta"><span>{categories[entry.data.category]}</span><span>{entry.data.publishedAt.toISOString().slice(0,10)}</span></div><h2>{entry.data.title}</h2><p>{entry.data.description}</p></a>)}</div> : <div class="empty">暂无已发布文章。示例文章目前保持草稿状态，不会出现在公开列表中。</div>}
   </div></div>
 </BaseLayout>
