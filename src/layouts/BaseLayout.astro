@@ -31,7 +31,7 @@ const pageTitle = title ? `${title}｜${site.name}` : `${site.name}｜电力电�
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>{site.name} · {new Date().getFullYear()}</div>
-        <div class="footer-links"><a href="/copyright/">版权与转载</a><a href="/rss.xml">RSS</a></div>
+        <div class="footer-links"><a href={`mailto:${site.email}`}>{site.email}</a><a href="/copyright/">版权与转载</a><a href="/rss.xml">RSS</a></div>
       </div>
     </footer>
   </body>

@@ -1,7 +1,8 @@
 export const site = {
   name: '电源拾光',
   description: '把电力电子中的原理、设计与工程经验，整理成可检索、可验证、可持续修订的技术笔记。',
-  email: 'hello@example.com',
+  email: 'powersg@126.com',
+  url: 'https://www.powershiguang.com',
 };
 
 export const categories = {
