@@ -24,6 +24,36 @@ function rehypeWrapTables() {
   return (tree) => walk(tree);
 }
 
+/** 把 ```mermaid 代码块转换为浏览器端可渲染的 Mermaid 容器。 */
+function rehypeMermaid() {
+  const getText = (node) => (node.children || [])
+    .map((child) => child.type === 'text' ? child.value : getText(child))
+    .join('');
+
+  const walk = (node) => {
+    if (!node.children) return;
+    node.children = node.children.map((child) => {
+      if (child.type === 'element' && child.tagName === 'pre') {
+        const code = child.children?.find((item) => item.type === 'element' && item.tagName === 'code');
+        const classNames = code?.properties?.className || [];
+        const language = child.properties?.dataLanguage ?? child.properties?.['data-language'];
+        if (code && (classNames.includes('language-mermaid') || language === 'mermaid')) {
+          return {
+            type: 'element',
+            tagName: 'div',
+            properties: { className: ['mermaid'] },
+            children: [{ type: 'text', value: getText(code) }],
+          };
+        }
+      }
+      walk(child);
+      return child;
+    });
+  };
+
+  return (tree) => walk(tree);
+}
+
 export default defineConfig({
   site: 'https://darkjades.github.io',
   base: '/power-notes',
@@ -31,6 +61,6 @@ export default defineConfig({
   integrations: [sitemap(), mdx()],
   markdown: {
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex, rehypeWrapTables],
+    rehypePlugins: [rehypeKatex, rehypeWrapTables, rehypeMermaid],
   },
 });

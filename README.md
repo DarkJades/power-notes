@@ -18,6 +18,8 @@ Astro 5（静态输出）+ TypeScript + MDX 内容组件 + KaTeX 数学公式 + 
 4. 正式构建：`npm run build`
 5. 检查构建结果：`npm run preview`
 
+推荐使用 VS Code 打开项目。首次打开时，请按提示安装项目推荐的扩展：Astro、Markdown All in One、Markdown Mermaid 和 Markdownlint。文章实时预览以 `npm run dev` 启动后的浏览器页面为准。
+
 ## 发布文章
 
 新建文章使用统一命令，例如：
@@ -36,9 +38,32 @@ npm run article:new -- --type=component-guide --slug=chip-resistor --title="贴�
 
 `npm run article:check` 会自动检查元数据、模板章节、图片路径、图片文件和写死的部署路径。GitHub Actions 也会在发布前执行同一检查。
 
+### Mermaid 框图
+
+文章正文可以直接使用 Mermaid 代码块，无需导入组件：
+
+````mdx
+```mermaid
+flowchart LR
+  A[输入电压] --> B[功率变换级]
+  B --> C[输出滤波]
+  C --> D[负载]
+```
+````
+
+本地执行 `npm run dev` 后即可在浏览器实时查看框图效果。
+
 ## 部署
 
 推送到 `main` 分支会触发 `.github/workflows/deploy.yml`，由 GitHub Actions 构建并发布到 GitHub Pages。
+
+日常发布可使用一条命令。它会检查远端是否已有新提交、运行完整校验、暂存所有变更、创建提交并推送：
+
+```bash
+npm run site:publish -- --message="新增文章：开关电源小信号建模"
+```
+
+若提示本地落后于远端，先执行 `git pull --rebase origin main`，再重新运行发布命令。
 
 当前站点挂在 GitHub Pages 的**子目录** `darkjades.github.io/power-notes/` 下，因此 `astro.config.mjs` 设置了 `base: '/power-notes'`，并使用 `src/data/site.ts` 中的 `resolveUrl()` 为所有内部链接自动加上前缀。
 

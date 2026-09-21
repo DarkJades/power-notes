@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+    "*.mdx": "mdx"
+  },
+  "editor.formatOnSave": true,
+  "editor.wordWrap": "on",
+  "markdown.preview.breaks": false,
+  "markdown.extension.toc.updateOnSave": false
+}

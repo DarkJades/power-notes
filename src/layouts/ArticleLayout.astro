@@ -21,6 +21,28 @@ const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long
     <img alt="" />
   </div>
   <script>
+    const diagrams = document.querySelectorAll<HTMLElement>('.mermaid');
+    if (diagrams.length) {
+      const { default: mermaid } = await import('mermaid');
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: 'strict',
+        theme: 'base',
+        themeVariables: {
+          primaryColor: '#fffefa',
+          primaryTextColor: '#1b1a18',
+          primaryBorderColor: '#985744',
+          lineColor: '#706d68',
+          secondaryColor: '#f3e9e3',
+          tertiaryColor: '#fbfaf6',
+          fontFamily: 'PingFang SC, Microsoft YaHei, sans-serif',
+        },
+      });
+      mermaid.run({ nodes: diagrams }).catch((error) => {
+        console.error('Mermaid 图表渲染失败：', error);
+      });
+    }
+
     const box = document.getElementById('figure-lightbox');
     if (box) {
       const img = box.querySelector('img');
