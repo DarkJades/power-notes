@@ -8,22 +8,33 @@
 
 ## 技术栈
 
-Astro 5（静态输出）+ TypeScript + KaTeX 数学公式 + RSS + Sitemap。
+Astro 5（静态输出）+ TypeScript + MDX 内容组件 + KaTeX 数学公式 + RSS + Sitemap。
 
 ## 本地使用
 
 1. 安装依赖：`npm install`
 2. 本地预览：`npm run dev`
-3. 正式构建：`npm run build`
-4. 检查构建结果：`npm run preview`
+3. 检查文章格式和代码：`npm run check:all`
+4. 正式构建：`npm run build`
+5. 检查构建结果：`npm run preview`
 
 ## 发布文章
 
-复制 `templates/article.md` 到 `src/content/blog/` 的相应分类目录。写作期间保留 `draft: true`；完成技术审核并确认公开后，改成 `draft: false`。
+新建文章使用统一命令，例如：
+
+```bash
+npm run article:new -- --type=component-guide --slug=chip-resistor --title="贴片电阻应用指导"
+```
+
+它会自动创建标准 MDX 文章和对应图片目录。可用的文章类型为：`component-guide`、`circuit-design`、`topology-analysis`、`engineering-case`、`design-checklist`、`ai-hardware`。模板位于 `templates/articles/`。
+
+写作期间保留 `draft: true`；完成技术审核并确认公开后，改成 `draft: false`。图片统一写为 `<Figure src="images/<slug>/文件名.jpg" ... />`，组件会自动处理 GitHub Pages 子目录和将来的自定义域名路径。
 
 生产构建会统一排除草稿，草稿不会进入文章列表、分类、标签、RSS、站点地图或文章路由。敏感资料仍应放在网站工程之外。
 
 分类取值限定为：`power-electronics`、`components`、`analog`、`pcb`、`engineering`、`ai-hardware`。
+
+`npm run article:check` 会自动检查元数据、模板章节、图片路径、图片文件和写死的部署路径。GitHub Actions 也会在发布前执行同一检查。
 
 ## 部署
 

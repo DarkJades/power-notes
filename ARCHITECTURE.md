@@ -164,7 +164,7 @@
 
 > 对应代码：`src/content.config.ts`
 
-文章放在 `src/content/blog/<分类>/<文件名>.md`。
+文章放在 `src/content/blog/<分类>/<文件名>.mdx`。MDX 保留 Markdown 写作体验，并支持统一的图文组件。
 
 ### 元数据字段
 
@@ -177,25 +177,31 @@
 | `updatedAt`   | 日期    | 否  | 更新日期                                     |
 | `category`    | 枚举    | 是  | 6 个分类之一（见下方）                             |
 | `tags`        | 字符串数组 | 否  | 标签，如 `["SiC", "MOSFET", "并联"]`           |
+| `template`    | 枚举    | 是  | 文章结构类型，决定创建模板与自动检查规则                 |
 | `draft`       | 布尔    | 否  | `true` = 草稿，不公开；默认 `true`                |
 
 **分类枚举值**（只能填这些）：  
 `power-electronics` ｜ `components` ｜ `analog` ｜ `pcb` ｜ `engineering` ｜ `ai-hardware`
 
-### 文章模板
+### 文章模板与组件
 
-`templates/article.md`，结构为四段：
+在 `templates/articles/` 下维护六类标准模板：`component-guide`（器件指导）、`circuit-design`（电路设计）、`topology-analysis`（拓扑分析）、`engineering-case`（工程复盘）、`design-checklist`（设计检查）和 `ai-hardware`（AI 与硬件）。
 
-1. 本文解决的问题
-2. 原理与分析
-3. 工程检查要点
-4. 参考资料
+使用命令新建文章：
+
+```bash
+npm run article:new -- --type=component-guide --slug=chip-resistor --title="贴片电阻应用指导"
+```
+
+文章内的图片、提示、设计规则和失效案例分别使用 `Figure`、`Note`、`DesignRule`、`FailureCase` 组件，组件集中在 `src/components/`。版式或路径规则变更时只改组件，不逐篇改文章。
 
 ### 现有文章
 
 | 文件                                                          | 标题                  | 分类  | 状态  |
 | ----------------------------------------------------------- | ------------------- | --- | --- |
-| `src/content/blog/components/sic-mosfet-parallel-design.md` | SiC MOSFET 并联设计检查要点 | 元器件 | 已发布 |
+| `src/content/blog/components/chip-resistor.mdx` | 贴片电阻：原理、参数、选型与降额 | 元器件 | 已发布 |
+| `src/content/blog/components/through-hole-resistor.mdx` | 直插电阻：原理、参数、选型与降额 | 元器件 | 已发布 |
+| `src/content/blog/components/sic-mosfet-parallel-design.mdx` | SiC MOSFET 并联设计检查要点 | 元器件 | 已发布 |
 
 ### 草稿机制
 
@@ -285,16 +291,17 @@
 | `--tbl-head-bg`   | 表头底色         | `#f0ede7`                    |
 | `--math-scale`    | 公式缩放         | `1`                          |
 
-**插图的写法**：文章里的插图用 HTML `<figure>` 结构，图注写在 `<figcaption>` 里。
+**插图的写法**：文章内导入 `Figure` 组件后，只写图片文件、替代文字和图注；不要写 `/power-notes/` 前缀。
 
-```html
-<figure class="figure">
-  <img src="/power-notes/images/<分类>/<文件名>.jpg" alt="替代文字" loading="lazy" />
-  <figcaption>图 1：图注文字</figcaption>
-</figure>
+```mdx
+<Figure src="images/<文章 slug>/文件名.jpg" alt="替代文字" caption="图 1：图注文字" />
 ```
 
 插图统一放在 `public/images/<文章 slug>/` 下。点图可全屏放大（`ArticleLayout.astro` 里的 lightbox）。
+
+### 发布前自动检查
+
+`npm run article:check` 会检查元数据、分类、模板章节、图片目录与文件、标题层级和写死的部署路径。`npm run check:all` 会依次执行代码检查、文章检查和正式构建；GitHub Actions 在发布前也会执行同一套检查。
 
 ### 图形化调整台（推荐）
 
