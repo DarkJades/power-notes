@@ -1,0 +1,12 @@
+---
+interface Props {
+  level?: 'required' | 'recommended';
+  title?: string;
+}
+const { level = 'recommended', title } = Astro.props;
+---
+
+<aside class:list={['design-rule', `design-rule--${level}`]}>
+  <span>{level === 'required' ? '必须核对' : '工程建议'}</span>
+  <div><strong>{title}</strong><slot /></div>
+</aside>

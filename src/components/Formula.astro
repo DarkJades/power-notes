@@ -1,0 +1,9 @@
+---
+interface Props { title?: string; }
+const { title } = Astro.props;
+---
+
+<div class="formula-block">
+  {title && <div class="formula-block__title">{title}</div>}
+  <div><slot /></div>
+</div>

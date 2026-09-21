@@ -1,0 +1,13 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'tip';
+  title?: string;
+}
+const { type = 'info', title } = Astro.props;
+const labels = { info: '说明', warning: '注意', tip: '建议' };
+---
+
+<aside class:list={['content-note', `content-note--${type}`]}>
+  <strong>{title || labels[type]}</strong>
+  <div><slot /></div>
+</aside>

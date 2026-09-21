@@ -1,0 +1,14 @@
+---
+interface Props {
+  phenomenon: string;
+  cause: string;
+  solution: string;
+}
+const { phenomenon, cause, solution } = Astro.props;
+---
+
+<section class="failure-case" aria-label="失效案例">
+  <div><span>现象</span><p>{phenomenon}</p></div>
+  <div><span>原因</span><p>{cause}</p></div>
+  <div><span>对策</span><p>{solution}</p></div>
+</section>

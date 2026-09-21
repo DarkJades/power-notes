@@ -1,0 +1,17 @@
+---
+import { resolveUrl } from '../data/site';
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  credit?: string;
+}
+
+const { src, alt, caption, credit } = Astro.props;
+---
+
+<figure class="figure">
+  <img src={resolveUrl(src)} alt={alt} loading="lazy" decoding="async" />
+  {(caption || credit) && <figcaption>{caption}{credit && <small> · {credit}</small>}</figcaption>}
+</figure>
