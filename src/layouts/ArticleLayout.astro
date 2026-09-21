@@ -24,16 +24,18 @@ const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long
     const box = document.getElementById('figure-lightbox');
     if (box) {
       const img = box.querySelector('img');
-      document.querySelectorAll('.prose .figure img').forEach((el) => {
-        el.addEventListener('click', () => {
-          img.src = el.getAttribute('src') || '';
-          img.alt = el.getAttribute('alt') || '';
-          box.classList.add('is-open');
+      if (img) {
+        document.querySelectorAll<HTMLImageElement>('.prose .figure img').forEach((el) => {
+          el.addEventListener('click', () => {
+            img.src = el.src;
+            img.alt = el.alt;
+            box.classList.add('is-open');
+          });
         });
-      });
-      const close = () => box.classList.remove('is-open');
-      box.addEventListener('click', close);
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+        const close = () => box.classList.remove('is-open');
+        box.addEventListener('click', close);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+      }
     }
   </script>
 </BaseLayout>
