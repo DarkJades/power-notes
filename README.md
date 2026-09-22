@@ -10,7 +10,26 @@
 
 Astro 5（静态输出）+ TypeScript + MDX 内容组件 + KaTeX 数学公式 + RSS + Sitemap。
 
-## 本地使用
+## 在线发文（推荐）
+
+日常发布文章不需要 VS Code、终端或 Git 命令。网站已配置为使用 [Pages CMS](https://app.pagescms.org/) 作为在线写作后台：它会把保存的内容直接写入本仓库，并自动触发 GitHub Pages 发布。
+
+首次使用：
+
+1. 打开 <https://app.pagescms.org/>，选择 **Sign in with GitHub**。
+2. 按页面提示安装 Pages CMS GitHub App，并授权仓库 `DarkJades/power-notes`。
+3. 进入仓库后，左侧选择 **在线文章**，点击 **New**。
+4. 填写标题、网页地址英文名、摘要、分类和标签；正文可直接在线排版、粘贴文字、插入表格和拖拽上传图片。
+5. 默认打开 **保持为草稿**。草稿不会出现在公开网站；确认文章可以公开时关闭此开关并保存。
+6. 保存后，GitHub Actions 会自动构建网站，通常 1～3 分钟后在 <https://darkjades.github.io/power-notes/> 可见。
+
+图片会自动保存到 `public/images/online/`，可下载的 PDF、Word、Excel、PPT 或 ZIP 文件可在底部的 **可下载资料附件** 上传，网站会自动显示下载入口。
+
+公式和 Mermaid 框图仍然支持：在正文编辑器切到 **Source** 模式后，按 Markdown 写法插入即可。在线编辑器的排版视图可用于写作过程中的格式预览；发布前请确认标题、图片、表格与附件名称。由于仓库是公开仓库，草稿和上传文件虽然不会显示在网站上，但仍不应包含公司机密或未授权资料。
+
+现有的 MDX 技术文章保持不变。在线后台只管理 `src/content/blog/online/` 中的新文章，避免误改已发布文章中的专用图表和公式组件。
+
+## 本地高级功能（可选）
 
 1. 安装依赖：`npm install`
 2. 本地预览：`npm run dev`

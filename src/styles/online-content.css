@@ -1,0 +1,26 @@
+/* 在线编辑器写入的标准 Markdown 图片与资料附件 */
+.prose > p > img {
+  display: block;
+  width: var(--fig-width);
+  height: auto;
+  margin: var(--fig-gap) calc((100% - var(--fig-width)) / 2);
+  padding: var(--fig-pad);
+  border: var(--fig-border);
+  background: var(--fig-bg);
+  cursor: zoom-in;
+}
+
+.article-attachments {
+  max-width: var(--doc-measure);
+  margin: 3.2em auto 0;
+  padding: 1.3em 1.5em;
+  border-block: 1px solid var(--line);
+}
+
+.article-attachments h2 { margin: 0 0 .65em; font-size: 1.15rem; }
+.article-attachments ul { margin: 0; padding-left: 1.2em; }
+.article-attachments a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 760px) {
+  .prose > p > img { width: 100%; margin-inline: 0; }
+}

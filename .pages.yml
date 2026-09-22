@@ -1,0 +1,130 @@
+# 电源拾光在线写作后台（Pages CMS）
+# 只管理 src/content/blog/online 下的新文章；既有 MDX 文章保持原样。
+media:
+  - name: article_images
+    label: 文章图片
+    input: public/images
+    output: /images
+    extensions: [png, jpg, jpeg, webp, gif, svg]
+    rename: safe
+  - name: article_files
+    label: 技术资料附件
+    input: public/documents
+    output: /documents
+    extensions: [pdf, doc, docx, xls, xlsx, ppt, pptx, zip]
+    rename: safe
+
+content:
+  - name: online_articles
+    label: 在线文章
+    type: collection
+    path: src/content/blog/online
+    format: yaml-frontmatter
+    filename:
+      template: "{fields.slug}.md"
+      field: false
+    view:
+      primary: title
+      fields: [title, draft, publishedAt, category]
+      sort: [publishedAt, title]
+      search: [title, description, tags]
+      default:
+        sort: publishedAt
+        order: desc
+    fields:
+      - name: title
+        label: 文章标题
+        type: string
+        required: true
+        options:
+          maxlength: 80
+
+      - name: slug
+        label: 网页地址英文名
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9-]+$"
+          message: "只能使用小写英文、数字和短横线，例如 buck-loop-design"
+        description: "只需填写一次；它会自动成为文章网址和文件名。"
+        options:
+          minlength: 3
+          maxlength: 80
+
+      - name: description
+        label: 文章摘要
+        type: text
+        required: true
+        description: "用于文章列表和搜索摘要，建议 40～120 字。"
+        options:
+          maxlength: 180
+
+      - name: publishedAt
+        label: 发布日期
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+
+      - name: updatedAt
+        label: 最后更新日期（可选）
+        type: date
+        options:
+          format: yyyy-MM-dd
+
+      - name: category
+        label: 文章分类
+        type: select
+        required: true
+        options:
+          values:
+            - name: power-electronics
+              label: 电力电子
+            - name: components
+              label: 元器件
+            - name: analog
+              label: 模拟电路
+            - name: pcb
+              label: PCB
+            - name: engineering
+              label: 工程经验
+            - name: ai-hardware
+              label: AI 与硬件
+
+      - name: tags
+        label: 标签
+        type: string
+        list: true
+        description: "每个标签单独填写，例如 SiC、驱动、布局。"
+
+      - name: draft
+        label: 保持为草稿（暂不在网站公开）
+        type: boolean
+        default: true
+        description: "先保持开启；确认文章可公开时再关闭，然后保存。"
+
+      - name: template
+        type: string
+        default: online-article
+        hidden: true
+
+      - name: body
+        label: 正文
+        type: rich-text
+        required: true
+        options:
+          media: article_images
+          path: online
+          rename: safe
+          switcher: true
+
+      - name: attachments
+        label: 可下载资料附件（可选）
+        type: file
+        list: true
+        options:
+          media: article_files
+          path: online
+          extensions: [pdf, doc, docx, xls, xlsx, ppt, pptx, zip]
+          unique: true
+          rename: safe

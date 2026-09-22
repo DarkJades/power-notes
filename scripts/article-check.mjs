@@ -5,7 +5,7 @@ const root = process.cwd();
 const contentRoot = join(root, 'src/content/blog');
 const publicRoot = join(root, 'public');
 const categories = new Set(['power-electronics', 'components', 'analog', 'pcb', 'engineering', 'ai-hardware']);
-const templates = new Set(['component-guide', 'circuit-design', 'topology-analysis', 'engineering-case', 'design-checklist', 'ai-hardware']);
+const templates = new Set(['component-guide', 'circuit-design', 'topology-analysis', 'engineering-case', 'design-checklist', 'ai-hardware', 'online-article']);
 const requiredHeadings = {
   'component-guide': ['一、基本原理', '二、关键特性与参数', '三、选型与应用指导', '四、降额规范', '五、使用注意事项', '六、常见失效与对策', '七、总结与核心建议', '八、经验案例总结'],
   'circuit-design': ['一、应用目标与边界条件', '二、工作原理与关键公式', '三、典型电路与参数计算'],
@@ -13,6 +13,7 @@ const requiredHeadings = {
   'engineering-case': ['一、问题背景与影响范围', '二、现象、工况与复现条件', '三、分析路径与证据'],
   'design-checklist': ['本文解决的问题', '静态均流检查', '动态均流检查', '测试与验证方法'],
   'ai-hardware': ['一、要解决的问题', '二、适用边界与输入要求', '三、工作流程'],
+  'online-article': [],
 };
 
 function files(dir) {
@@ -38,7 +39,8 @@ for (const path of files(contentRoot)) {
   const { fields, body } = parsed;
   for (const key of ['title', 'slug', 'description', 'publishedAt', 'category', 'draft']) if (!fields[key]) errors.push(`${display}: 缺少 ${key}。`);
   if (fields.category && !categories.has(fields.category)) errors.push(`${display}: category 不在允许列表中。`);
-  const template = fields.template || 'component-guide';
+  const isOnlineArticle = display.startsWith('src/content/blog/online/');
+  const template = fields.template || (isOnlineArticle ? 'online-article' : 'component-guide');
   if (!templates.has(template)) errors.push(`${display}: template 不在允许列表中。`);
   if (body.includes('/power-notes/')) errors.push(`${display}: 禁止写死 /power-notes/ 路径，请使用 Figure 组件的 images/<slug>/ 文件路径。`);
   if (/^### /m.test(body) && !/^## /m.test(body)) errors.push(`${display}: 标题层级不能从正文直接跳到三级标题。`);

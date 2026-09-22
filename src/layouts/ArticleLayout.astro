@@ -1,7 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { categories, resolveUrl } from '../data/site';
-const { title, description, publishedAt, updatedAt, category, tags } = Astro.props;
+const { title, description, publishedAt, updatedAt, category, tags, attachments = [] } = Astro.props;
 const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long'}).format(value);
 ---
 <BaseLayout title={title} description={description}>
@@ -15,6 +15,16 @@ const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long
         <div>{tags.map((tag:string)=><a class="tag" href={resolveUrl(`tags/${tag}/`)}>{tag}</a>)}</div>
       </header>
       <div class="prose"><slot /></div>
+      {attachments.length > 0 && (
+        <section class="article-attachments" aria-label="资料附件">
+          <h2>资料附件</h2>
+          <ul>
+            {attachments.map((attachment: string) => (
+              <li><a href={resolveUrl(attachment)} target="_blank" rel="noreferrer">{attachment.split('/').at(-1)}</a></li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   </article>
   <div class="lightbox" id="figure-lightbox" role="dialog" aria-label="图片放大查看">
@@ -47,7 +57,7 @@ const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long
     if (box) {
       const img = box.querySelector('img');
       if (img) {
-        document.querySelectorAll<HTMLImageElement>('.prose .figure img').forEach((el) => {
+        document.querySelectorAll<HTMLImageElement>('.prose .figure img, .prose > p > img').forEach((el) => {
           el.addEventListener('click', () => {
             img.src = el.src;
             img.alt = el.alt;
