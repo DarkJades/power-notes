@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/online-content.css';
+import '../styles/content-architecture.css';
 import { site, resolveUrl } from '../data/site';
 interface Props { title?: string; description?: string; }
 const { title, description = site.description } = Astro.props;
@@ -24,7 +25,7 @@ const pageTitle = title ? `${title}｜${site.name}` : `${site.name}｜电力电�
           <span>记录 · 思考 · 分享<br />让电源技术走得更远</span>
         </a>
         <nav class="nav-links" aria-label="主导航">
-          <a href={resolveUrl('articles/')}>文章</a><a href={resolveUrl('categories/')}>分类</a><a href={resolveUrl('tags/')}>标签</a><a href={resolveUrl('about/')}>关于</a>
+          <a href={resolveUrl('articles/')}>文章</a><a href={resolveUrl('archive/')}>归档</a><a href={resolveUrl('categories/')}>分类</a><a href={resolveUrl('tags/')}>标签</a><a href={resolveUrl('resources/')}>资料库</a><a href={resolveUrl('about/')}>关于</a>
         </nav>
       </div>
     </header>

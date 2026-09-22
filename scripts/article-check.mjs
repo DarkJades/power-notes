@@ -3,9 +3,11 @@ import { join, relative } from 'node:path';
 
 const root = process.cwd();
 const contentRoot = join(root, 'src/content/blog');
+const resourceRoot = join(root, 'src/content/resources');
 const publicRoot = join(root, 'public');
 const categories = new Set(['power-electronics', 'components', 'analog', 'pcb', 'engineering', 'ai-hardware']);
 const templates = new Set(['component-guide', 'circuit-design', 'topology-analysis', 'engineering-case', 'design-checklist', 'ai-hardware', 'online-article']);
+const resourceTypes = new Set(['standard', 'datasheet', 'application-note', 'design-template', 'test-report', 'tool', 'other']);
 const requiredHeadings = {
   'component-guide': ['一、基本原理', '二、关键特性与参数', '三、选型与应用指导', '四、降额规范', '五、使用注意事项', '六、常见失效与对策', '七、总结与核心建议', '八、经验案例总结'],
   'circuit-design': ['一、应用目标与边界条件', '二、工作原理与关键公式', '三、典型电路与参数计算'],
@@ -17,6 +19,7 @@ const requiredHeadings = {
 };
 
 function files(dir) {
+  if (!existsSync(dir)) return [];
   return readdirSync(dir).flatMap((name) => {
     const path = join(dir, name);
     return statSync(path).isDirectory() ? files(path) : /\.(md|mdx)$/.test(name) ? [path] : [];
@@ -31,7 +34,10 @@ function frontmatter(source) {
 }
 
 const errors = [];
-for (const path of files(contentRoot)) {
+const blogFiles = files(contentRoot);
+const resourceFiles = files(resourceRoot);
+
+for (const path of blogFiles) {
   const display = relative(root, path);
   const source = readFileSync(path, 'utf8');
   const parsed = frontmatter(source);
@@ -51,9 +57,21 @@ for (const path of files(contentRoot)) {
   }
 }
 
+for (const path of resourceFiles) {
+  const display = relative(root, path);
+  const source = readFileSync(path, 'utf8');
+  const parsed = frontmatter(source);
+  if (!parsed) { errors.push(`${display}: 缺少 YAML frontmatter。`); continue; }
+  const { fields } = parsed;
+  for (const key of ['title', 'slug', 'description', 'publishedAt', 'category', 'resourceType', 'file', 'draft']) if (!fields[key]) errors.push(`${display}: 缺少 ${key}。`);
+  if (fields.category && !categories.has(fields.category)) errors.push(`${display}: category 不在允许列表中。`);
+  if (fields.resourceType && !resourceTypes.has(fields.resourceType)) errors.push(`${display}: resourceType 不在允许列表中。`);
+  if (fields.file && !existsSync(join(publicRoot, fields.file.replace(/^\/+/, '')))) errors.push(`${display}: 资料文件不存在：public/${fields.file}`);
+}
+
 if (errors.length) {
   console.error(`文章规范检查失败（${errors.length} 项）：`);
   errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
-console.log(`文章规范检查通过：${files(contentRoot).length} 篇文章。`);
+console.log(`内容规范检查通过：${blogFiles.length} 篇文章，${resourceFiles.length} 份资料。`);

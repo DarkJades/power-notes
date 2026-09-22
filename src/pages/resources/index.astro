@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { categories, resolveUrl } from '../../data/site';
+import { resourceTypes, resourceTypeOrder } from '../../data/resources';
+
+const resources = (await getCollection('resources', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+<BaseLayout title="技术资料库">
+  <div class="page-main"><div class="container">
+    <header class="page-title"><div class="eyebrow">RESOURCE LIBRARY</div><h1>技术资料库</h1><p>公开可分享的标准、手册、应用笔记、设计模板与测试资料。</p></header>
+    {resources.length ? <div>{resourceTypeOrder.map((type) => { const entries = resources.filter((entry) => entry.data.resourceType === type); return entries.length ? <section class="architecture-section"><h2>{resourceTypes[type]}</h2><div class="resource-grid">{entries.map((entry) => <a class="resource-card" href={resolveUrl(`resources/${entry.data.slug}/`)}><span class="resource-type">{categories[entry.data.category]}</span><h2>{entry.data.title}</h2><p>{entry.data.description}</p><div class="article-meta"><span>{entry.data.publishedAt.toISOString().slice(0, 10)}</span><span>{entry.data.tags.join(' · ') || '未标注标签'}</span></div></a>)}</div></section> : null; })}</div> : <div class="empty">暂无公开资料。通过在线后台的“技术资料库”上传后，会自动在此归档。</div>}
+  </div></div>
+</BaseLayout>

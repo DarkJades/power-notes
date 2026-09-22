@@ -1,0 +1,35 @@
+/* 内容架构页：归档、系列与资料库，沿用站点既有纸张与技术文档视觉。 */
+.archive-year { display: grid; grid-template-columns: 108px minmax(0, 1fr); border-top: 1px solid var(--line); }
+.archive-year:last-child { border-bottom: 1px solid var(--line); }
+.archive-year > h2 { margin: 0; padding: 24px 12px 24px 0; color: var(--accent); font: 600 1.5rem/1.3 Georgia, serif; }
+.archive-list { margin: 0; padding: 13px 0; list-style: none; }
+.archive-list li + li { border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
+.archive-list a { display: grid; grid-template-columns: 102px minmax(0, 1fr) auto; gap: 14px; align-items: baseline; padding: 12px 0; }
+.archive-list a:hover strong,.series-card a:hover { color: var(--accent); }
+.archive-list time,.archive-list small { color: var(--muted); font-size: .83rem; }
+.archive-list strong { font-family: "Songti SC", STSong, SimSun, serif; font-size: 1.06rem; font-weight: 600; }
+.architecture-section { margin-top: 62px; }
+.architecture-section > h2 { margin: 0 0 16px; font: 600 1.55rem/1.35 "Songti SC", STSong, SimSun, serif; }
+.series-grid,.resource-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.series-card,.resource-card { display: block; padding: 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255,255,255,.25); }
+.series-card span,.resource-type { display: block; margin-bottom: 7px; color: var(--accent); font: .72rem/1.4 ui-monospace, Consolas, monospace; letter-spacing: .08em; }
+.series-card h3,.resource-card h2 { margin: 0 0 6px; font: 600 1.25rem/1.45 "Songti SC", STSong, SimSun, serif; }
+.series-card p,.resource-card p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.7; }
+.series-card ul { margin: 14px 0 0; padding-left: 1.1em; }
+.series-card li + li { margin-top: 5px; }
+.resource-grid { margin-top: 18px; }
+.resource-card { min-height: 200px; }
+.resource-card .article-meta { justify-content: flex-start; margin-top: 15px; }
+.resource-detail { max-width: var(--doc-measure); margin: 0 auto; }
+.resource-download { display: inline-flex; align-items: center; margin: 22px 0 26px; padding: 8px 14px; color: var(--accent); border: 1px solid #c7a99d; background: var(--surface); }
+.resource-download:hover { background: var(--accent-soft); }
+.article-series { margin-top: 13px; color: var(--muted); font-size: .86rem; }
+.article-series a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .archive-year { grid-template-columns: 1fr; }
+  .archive-year > h2 { padding: 18px 0 4px; }
+  .archive-list a { grid-template-columns: 78px minmax(0, 1fr); }
+  .archive-list small { display: none; }
+  .series-grid,.resource-grid { grid-template-columns: 1fr; }
+}

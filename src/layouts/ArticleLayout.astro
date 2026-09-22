@@ -1,7 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { categories, resolveUrl } from '../data/site';
-const { title, description, publishedAt, updatedAt, category, tags, attachments = [] } = Astro.props;
+const { title, description, publishedAt, updatedAt, category, tags, series, attachments = [] } = Astro.props;
 const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long'}).format(value);
 ---
 <BaseLayout title={title} description={description}>
@@ -13,6 +13,7 @@ const format = (value: Date) => new Intl.DateTimeFormat('zh-CN',{dateStyle:'long
         <p>{description}</p>
         <div class="article-meta"><span>发布于 {format(publishedAt)}</span>{updatedAt && <span>更新于 {format(updatedAt)}</span>}</div>
         <div>{tags.map((tag:string)=><a class="tag" href={resolveUrl(`tags/${tag}/`)}>{tag}</a>)}</div>
+        {series && <div class="article-series">所属系列：<a href={resolveUrl('archive/#series')}>{series}</a></div>}
       </header>
       <div class="prose"><slot /></div>
       {attachments.length > 0 && (

@@ -97,6 +97,16 @@ content:
         list: true
         description: "每个标签单独填写，例如 SiC、驱动、布局。"
 
+      - name: series
+        label: 所属系列（可选）
+        type: string
+        description: "同一专题的文章填写完全相同的名称，例如 SiC MOSFET 设计系列。"
+
+      - name: seriesOrder
+        label: 系列内序号（可选）
+        type: number
+        description: "系列文章按序号从小到大排列，例如第 1 篇填 1。"
+
       - name: draft
         label: 保持为草稿（暂不在网站公开）
         type: boolean
@@ -128,3 +138,131 @@ content:
           extensions: [pdf, doc, docx, xls, xlsx, ppt, pptx, zip]
           unique: true
           rename: safe
+
+  - name: technical_resources
+    label: 技术资料库
+    type: collection
+    path: src/content/resources
+    format: yaml-frontmatter
+    filename:
+      template: "{fields.slug}.md"
+      field: false
+    view:
+      primary: title
+      fields: [title, resourceType, draft, publishedAt]
+      sort: [publishedAt, title]
+      search: [title, description, tags]
+      default:
+        sort: publishedAt
+        order: desc
+    fields:
+      - name: title
+        label: 资料标题
+        type: string
+        required: true
+        options:
+          maxlength: 100
+
+      - name: slug
+        label: 网页地址英文名
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9-]+$"
+          message: "只能使用小写英文、数字和短横线，例如 sic-mosfet-datasheet"
+        description: "只需填写一次；它会自动成为资料详情页网址和文件名。"
+        options:
+          minlength: 3
+          maxlength: 80
+
+      - name: description
+        label: 资料摘要
+        type: text
+        required: true
+        description: "说明资料内容、适用范围与版本信息，建议 40～160 字。"
+        options:
+          maxlength: 220
+
+      - name: publishedAt
+        label: 归档日期
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+
+      - name: updatedAt
+        label: 最后更新日期（可选）
+        type: date
+        options:
+          format: yyyy-MM-dd
+
+      - name: resourceType
+        label: 资料类型
+        type: select
+        required: true
+        options:
+          values:
+            - name: standard
+              label: 标准与规范
+            - name: datasheet
+              label: 数据手册
+            - name: application-note
+              label: 应用笔记
+            - name: design-template
+              label: 设计模板
+            - name: test-report
+              label: 测试与案例
+            - name: tool
+              label: 工具与软件
+            - name: other
+              label: 其他资料
+
+      - name: category
+        label: 所属技术分类
+        type: select
+        required: true
+        options:
+          values:
+            - name: power-electronics
+              label: 电力电子
+            - name: components
+              label: 元器件
+            - name: analog
+              label: 模拟电路
+            - name: pcb
+              label: PCB
+            - name: engineering
+              label: 工程经验
+            - name: ai-hardware
+              label: AI 与硬件
+
+      - name: tags
+        label: 标签
+        type: string
+        list: true
+        description: "每个标签单独填写，例如 SiC、驱动、布局。"
+
+      - name: file
+        label: 上传资料文件
+        type: file
+        required: true
+        options:
+          media: article_files
+          path: resources
+          extensions: [pdf, doc, docx, xls, xlsx, ppt, pptx, zip]
+          rename: safe
+
+      - name: draft
+        label: 保持为草稿（暂不在资料库公开）
+        type: boolean
+        default: true
+        description: "先保持开启；确认文件和说明均可公开时再关闭，然后保存。"
+
+      - name: body
+        label: 资料说明（可选）
+        type: rich-text
+        options:
+          media: article_images
+          path: resources
+          rename: safe
+          switcher: true

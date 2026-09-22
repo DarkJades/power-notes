@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { categories, resolveUrl } from '../../data/site';
+
+const articles = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const years = [...new Set(articles.map((entry) => entry.data.publishedAt.getFullYear()))].sort((a, b) => b - a);
+const series = [...articles.reduce((groups, entry) => {
+  if (!entry.data.series) return groups;
+  const entries = groups.get(entry.data.series) || [];
+  entries.push(entry);
+  groups.set(entry.data.series, entries);
+  return groups;
+}, new Map<string, typeof articles>())].map(([name, entries]) => ({
+  name,
+  entries: entries.sort((a, b) => (a.data.seriesOrder ?? Number.MAX_SAFE_INTEGER) - (b.data.seriesOrder ?? Number.MAX_SAFE_INTEGER) || a.data.publishedAt.valueOf() - b.data.publishedAt.valueOf()),
+}));
+---
+<BaseLayout title="文章归档">
+  <div class="page-main"><div class="container">
+    <header class="page-title"><div class="eyebrow">ARCHIVE</div><h1>文章归档</h1><p>按发布时间、技术分类与系列脉络整理全部公开文章。</p></header>
+    {articles.length ? <div>{years.map((year) => <section class="archive-year"><h2>{year}</h2><ul class="archive-list">{articles.filter((entry) => entry.data.publishedAt.getFullYear() === year).map((entry) => <li><a href={resolveUrl(`articles/${entry.data.slug}/`)}><time>{entry.data.publishedAt.toISOString().slice(5, 10)}</time><strong>{entry.data.title}</strong><small>{categories[entry.data.category]}</small></a></li>)}</ul></section>)}</div> : <div class="empty">暂无已发布文章。</div>}
+    <section class="architecture-section" id="series"><h2>专题系列</h2>{series.length ? <div class="series-grid">{series.map((group) => <div class="series-card"><span>系列 · {group.entries.length} 篇</span><h3>{group.name}</h3><ul>{group.entries.map((entry) => <li><a href={resolveUrl(`articles/${entry.data.slug}/`)}>{entry.data.seriesOrder ? `${entry.data.seriesOrder}. ` : ''}{entry.data.title}</a></li>)}</ul></div>)}</div> : <div class="empty">文章填写相同的“所属系列”后，会自动在这里组成专题。</div>}</section>
+  </div></div>
+</BaseLayout>
